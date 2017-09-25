@@ -10,6 +10,12 @@ RSpec.describe PaymentsController, type: :controller do
         post :create, { loan_id: loan.id, payment: valid_params, format: :json }
         expect(response).to have_http_status(:ok)
       end
+
+      it 'creates a new payment' do
+        expect {
+          post :create, { loan_id: loan.id, payment: valid_params, format: :json }
+        }.to change(Payment, :count).by(1)
+      end
     end
   end
 end
