@@ -1,8 +1,15 @@
 class PaymentsController < ApplicationController
   def create
     @loan = Loan.find(params[:loan_id])
-    @payment = @loan.payments.create!(payment_params)
-    render json: @payment
+    pending = @loan.outstanding_balance_calc
+
+    if payment_params["payment_amount"] > pending
+      render json: 'Your payment cannot exceed the outstanding balance of your loan', status: 422
+    else
+      @payment = @loan.payments.create!(payment_params)
+      render json: @payment
+    end
+
   end
 
   private

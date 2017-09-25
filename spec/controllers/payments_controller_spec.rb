@@ -17,5 +17,15 @@ RSpec.describe PaymentsController, type: :controller do
         }.to change(Payment, :count).by(1)
       end
     end
+
+    context 'payment_amount > outstanding_balance' do
+      let(:invalid_params) { { payment_amount: 500.0, payment_date: Date.today } }
+
+      it 'responds with a 422' do
+        post :create, { loan_id: loan.id, payment: invalid_params, format: :json }
+        expect(response).to have_http_status(422)
+        expect(response.body).to eq("Your payment cannot exceed the outstanding balance of your loan")
+      end
+    end
   end
 end
