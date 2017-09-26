@@ -1,6 +1,7 @@
 class PaymentsController < ApplicationController
+  before_action :find_loan, only: [:create, :index, :show]
+
   def create
-    @loan = Loan.find(params[:loan_id])
     pending = @loan.outstanding_balance_calc
 
     if payment_params["payment_amount"] > pending
@@ -9,20 +10,22 @@ class PaymentsController < ApplicationController
       @payment = @loan.payments.create!(payment_params)
       render json: @payment
     end
+  end
 
-    def index
-      @loan = Loan.find(params[:loan_id])
-      render json: @loan.payments
-    end
+  def index
+    render json: @loan.payments
+  end
 
-    def show
-      @loan = Loan.find(params[:loan_id])
-      render json: @loan.payments.find(params[:id])
-    end
+  def show
+    render json: @loan.payments.find(params[:id])
   end
 
   private
     def payment_params
       params.require(:payment).permit(:payment_amount, :payment_date)
+    end
+
+    def find_loan
+      @loan = Loan.find(params[:loan_id])
     end
 end
