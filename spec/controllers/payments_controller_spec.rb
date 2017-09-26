@@ -31,12 +31,27 @@ RSpec.describe PaymentsController, type: :controller do
 
   describe '#index' do
     let(:loan) { Loan.create!(funded_amount: 150.0) }
-    let(:valid_params) { { payment_amount: 50.0, payment_date: Date.today } }
-    let(:valid_params) { { payment_amount: 80.0, payment_date: Date.today } }
 
-    it 'responds with a 200' do
+    it 'is successful' do
       get :index, { loan_id: loan.id, format: :json }
       expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns attributes' do
+      loan.payments.create!(payment_amount: 50.0, payment_date: Date.today)
+      loan.payments.create!(payment_amount: 80.0, payment_date: Date.today)
+
+      get :index, { loan_id: loan.id, format: :json }
+      payments = JSON.parse(response.body)
+      first_pay = payments[0]
+
+      expect(payments.count).to eq(2)
+      expect(first_pay).to have_key("id")
+      expect(first_pay).to have_key("loan_id")
+      expect(first_pay).to have_key("payment_amount")
+      expect(first_pay).to have_key("payment_date")
+      expect(first_pay["loan_id"]).to eq(loan.id)
+      expect(first_pay["payment_amount"].to_f).to eq(50.0)
     end
   end
 end
