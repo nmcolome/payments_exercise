@@ -27,6 +27,26 @@ RSpec.describe PaymentsController, type: :controller do
         expect(response.body).to eq("Your payment cannot exceed the outstanding balance of your loan")
       end
     end
+
+    context 'absence of amount' do
+      let(:no_amount) { { payment_date: Date.today } }
+
+      it 'responds with a 422' do
+        post :create, { loan_id: loan.id, payment: no_amount, format: :json }
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body)[0]).to eq("Payment amount can't be blank")
+      end
+    end
+
+    context 'absence of date' do
+      let(:no_date) { { payment_amount: 500.0 } }
+
+      it 'responds with a 422' do
+        post :create, { loan_id: loan.id, payment: no_date, format: :json }
+        expect(response).to have_http_status(422)
+        expect(JSON.parse(response.body)[0]).to eq("Payment date can't be blank")
+      end
+    end
   end
 
   describe '#index' do
