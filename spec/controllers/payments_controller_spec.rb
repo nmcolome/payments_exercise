@@ -28,4 +28,15 @@ RSpec.describe PaymentsController, type: :controller do
       end
     end
   end
+
+  describe '#index' do
+    let(:loan) { Loan.create!(funded_amount: 150.0) }
+    let(:valid_params) { { payment_amount: 50.0, payment_date: Date.today } }
+    let(:valid_params) { { payment_amount: 80.0, payment_date: Date.today } }
+
+    it 'responds with a 200' do
+      get :index, { loan_id: loan.id, format: :json }
+      expect(response).to have_http_status(:ok)
+    end
+  end
 end

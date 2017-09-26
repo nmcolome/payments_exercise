@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
   resources :loans, defaults: {format: :json} do
-    resources :payments, only: [:create]
+    resources :payments, only: [:create, :index]
   end
 end
