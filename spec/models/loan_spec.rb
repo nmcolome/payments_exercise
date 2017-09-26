@@ -8,4 +8,8 @@ RSpec.describe Loan, type: :model do
   describe 'relationships' do
     it { is_expected.to have_many(:payments)}
   end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :funded_amount}
+  end
 end

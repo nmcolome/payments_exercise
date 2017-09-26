@@ -1,4 +1,6 @@
 class Loan < ActiveRecord::Base
+  validates :funded_amount, presence: true
+
   has_many :payments
 
   def outstanding_balance

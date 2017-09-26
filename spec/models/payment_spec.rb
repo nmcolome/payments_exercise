@@ -8,6 +8,11 @@ RSpec.describe Payment, type: :model do
   end
 
   describe 'relationships' do
-    it { is_expected.to belong_to(:loan)}
+    it { is_expected.to belong_to :loan}
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :payment_amount}
+    it { is_expected.to validate_presence_of :payment_date}
   end
 end
