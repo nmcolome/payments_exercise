@@ -58,4 +58,6 @@ The following endpoints are available. All endpoints will return the data respon
   * created_at: date and time of creation.
   * updated_at: update date and time, if there hasn't been any updates it will match the created_at date.
 
-* `POST /loans/:id/payments` - endpoint to create payments for a given loan.
+* `POST /loans/:id/payments` - create payments for a given loan with the parameters:
+`{ "payment": { "payment_amount": 80, "payment_date": "2017/09/25" } }`. 
+If the payment is successfully created, the payment object will be returned. If the payment amount exceeds the outstanding_balance, the payment will not be successfully created, a 422 status code will be returned and a "Your payment cannot exceed the outstanding balance of your loan" message will be returned.
