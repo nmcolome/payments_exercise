@@ -3,12 +3,12 @@ class PaymentsController < ApplicationController
 
   def create
     pending = @loan.outstanding_balance
+    @payment = @loan.payments.new(payment_params)
 
-    if payment_params["payment_amount"] > pending
-      render json: 'Your payment cannot exceed the outstanding balance of your loan', status: 422
-    else
-      @payment = @loan.payments.create(payment_params)
+    if @payment.save && @payment.payment_amount < pending
       render json: @payment
+    else
+      render json: error_messages(@payment), status: 422
     end
   end
 
@@ -27,5 +27,14 @@ class PaymentsController < ApplicationController
 
     def find_loan
       @loan = Loan.find(params[:loan_id])
+    end
+
+    def error_messages(payment)
+      if !payment.save
+        payment.errors.full_messages
+      else
+        payment.delete
+        'Your payment cannot exceed the outstanding balance of your loan'
+      end
     end
 end
