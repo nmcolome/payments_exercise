@@ -6,6 +6,6 @@ RSpec.describe Loan, type: :model do
   end
 
   describe 'relationships' do
-    it { should have_many(:payments)}
+    it { is_expected.to have_many(:payments)}
   end
 end

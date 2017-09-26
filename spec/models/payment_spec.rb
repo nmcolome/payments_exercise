@@ -8,6 +8,6 @@ RSpec.describe Payment, type: :model do
   end
 
   describe 'relationships' do
-    it { should belong_to(:loan)}
+    it { is_expected.to belong_to(:loan)}
   end
 end
