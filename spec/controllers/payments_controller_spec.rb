@@ -54,4 +54,26 @@ RSpec.describe PaymentsController, type: :controller do
       expect(first_pay["payment_amount"].to_f).to eq(50.0)
     end
   end
+
+  describe '#show' do
+    let(:loan) { Loan.create!(funded_amount: 150.0) }
+    let(:payment) { loan.payments.create!(payment_amount: 80.0, payment_date: Date.today) }
+
+    it 'responds with a 200' do
+      get :show, id: payment.id, loan_id: loan.id
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns attributes' do
+      get :show, id: payment.id, loan_id: loan.id
+      pay = JSON.parse(response.body)
+
+      expect(pay).to have_key("id")
+      expect(pay).to have_key("loan_id")
+      expect(pay).to have_key("payment_amount")
+      expect(pay).to have_key("payment_date")
+      expect(pay["loan_id"]).to eq(loan.id)
+      expect(pay["payment_amount"].to_f).to eq(payment.payment_amount)
+    end
+  end
 end

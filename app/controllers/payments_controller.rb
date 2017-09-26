@@ -14,6 +14,11 @@ class PaymentsController < ApplicationController
       @loan = Loan.find(params[:loan_id])
       render json: @loan.payments
     end
+
+    def show
+      @loan = Loan.find(params[:loan_id])
+      render json: @loan.payments.find(params[:id])
+    end
   end
 
   private
