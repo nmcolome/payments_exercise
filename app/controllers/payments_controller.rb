@@ -9,7 +9,7 @@ class PaymentsController < ApplicationController
       @payment.save
       render json: @payment
     else
-      render json: error_messages(@payment), status: 422
+      render json: @payment.error_messages, status: 422
     end
   end
 
@@ -28,13 +28,5 @@ class PaymentsController < ApplicationController
 
     def find_loan
       @loan = Loan.find(params[:loan_id])
-    end
-
-    def error_messages(payment)
-      if payment.valid?
-        'Your payment cannot exceed the outstanding balance of your loan'
-      else
-        payment.errors.full_messages
-      end
     end
 end
