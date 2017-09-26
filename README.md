@@ -22,6 +22,11 @@ Run `bundle install` - If this fails, and you have the correct ruby and rails ve
 
 Run `rake db:{create,migrate,seed}`
 
+## Testing
+
+Run `rspec` in the terminal to run all tests and ensure that they are all passing.
+
+Run `rspec spec/[specific_test_path]` to run a single test.
 
 ## Endpoints
 The following endpoints are available. All endpoints will return the data response as JSON.
