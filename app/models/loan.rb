@@ -1,9 +1,12 @@
 class Loan < ActiveRecord::Base
   has_many :payments
 
-  def outstanding_balance_calc
+  def outstanding_balance
+    self.funded_amount - self.get_total_payments
+  end
+
+  def get_total_payments
     payments = self.payments.pluck(:payment_amount).reduce(:+)
-    total_payments = payments == nil ? 0 : payments
-    self.funded_amount - total_payments
+    payments == nil ? 0 : payments
   end
 end

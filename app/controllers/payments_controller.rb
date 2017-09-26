@@ -2,7 +2,7 @@ class PaymentsController < ApplicationController
   before_action :find_loan, only: [:create, :index, :show]
 
   def create
-    pending = @loan.outstanding_balance_calc
+    pending = @loan.outstanding_balance
 
     if payment_params["payment_amount"] > pending
       render json: 'Your payment cannot exceed the outstanding balance of your loan', status: 422
