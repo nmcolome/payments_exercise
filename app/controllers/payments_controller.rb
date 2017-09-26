@@ -30,9 +30,10 @@ class PaymentsController < ApplicationController
     end
 
     def error_messages(payment)
-      if payment.payment_amount
+      if payment.payment_amount && payment.payment_date
         'Your payment cannot exceed the outstanding balance of your loan'
       else
+        payment.save
         payment.errors.full_messages
       end
     end
